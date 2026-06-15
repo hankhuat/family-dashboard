@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Dashboard</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #222536;
+    --border: #2e3150;
+    --text: #e8eaf0;
+    --muted: #7b80a0;
+    --accent: #7c9fff;
+    --red: #ff6b6b;
+    --yellow: #ffd166;
+    --green: #06d6a0;
+    --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    min-height: 100vh;
+  }
+
+  /* ── AUTH SCREEN ── */
+  #auth-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+    gap: 1.5rem;
+  }
+
+  .auth-logo {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .auth-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.05em;
+  }
+
+  .auth-sub {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .auth-input {
+    width: 100%;
+    max-width: 280px;
+    padding: 0.75rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 1rem;
+    text-align: center;
+    letter-spacing: 0.1em;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .auth-input:focus { border-color: var(--accent); }
+
+  .auth-btn {
+    width: 100%;
+    max-width: 280px;
+    padding: 0.75rem;
+    background: var(--accent);
+    color: #0f1117;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .auth-btn:hover { opacity: 0.85; }
+
+  .auth-error {
+    color: var(--red);
+    font-size: 0.85rem;
+    display: none;
+  }
+
+  /* ── MAIN DASHBOARD ── */
+  #dashboard { display: none; max-width: 480px; margin: 0 auto; padding: 0 0 4rem; }
+
+  /* Header */
+  .header {
+    padding: 1.25rem 1rem 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .header-title { font-size: 1.1rem; font-weight: 700; letter-spacing: 0.04em; }
+  .header-meta { font-size: 0.75rem; color: var(--muted); text-align: right; }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 10;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 0.75rem 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--muted);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+
+  .tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* Sections */
+  .section { padding: 1rem; }
+  .section + .section { border-top: 1px solid var(--border); }
+
+  .section-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .card-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.2rem 0;
+    font-size: 0.82rem;
+  }
+
+  .card-key { color: var(--muted); flex-shrink: 0; margin-right: 0.5rem; }
+  .card-val { color: var(--text); text-align: right; }
+
+  /* Big stat */
+  .stat-row {
+    display: flex;
+    gap: 0.6rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .stat-box {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.8rem;
+    text-align: center;
+  }
+
+  .stat-num { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+  .stat-label { font-size: 0.65rem; color: var(--muted); margin-top: 0.15rem; }
+
+  /* Alerts */
+  .alert {
+    padding: 0.6rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+
+  .alert-red { background: rgba(255,107,107,0.12); border: 1px solid rgba(255,107,107,0.3); }
+  .alert-yellow { background: rgba(255,209,102,0.1); border: 1px solid rgba(255,209,102,0.25); }
+  .alert-green { background: rgba(6,214,160,0.1); border: 1px solid rgba(6,214,160,0.25); }
+
+  /* Schedule */
+  .schedule-row {
+    display: flex;
+    align-items: baseline;
+    padding: 0.35rem 0;
+    font-size: 0.82rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .schedule-row:last-child { border-bottom: none; }
+  .schedule-day { color: var(--muted); width: 2.5rem; flex-shrink: 0; font-size: 0.75rem; font-weight: 600; }
+  .schedule-val { color: var(--text); }
+
+  /* Meal plan */
+  .meal-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .meal-day { font-size: 0.7rem; font-weight: 700; color: var(--accent); margin-bottom: 0.3rem; }
+  .meal-main { font-size: 0.82rem; color: var(--text); margin-bottom: 0.25rem; }
+  .meal-colors { font-size: 0.72rem; color: var(--muted); }
+
+  /* Shopping list */
+  .shop-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 0;
+    font-size: 0.82rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .shop-item:last-child { border-bottom: none; }
+  .shop-item::before {
+    content: '○';
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  /* Finance bar */
+  .budget-bar-wrap {
+    margin: 0.75rem 0 0.5rem;
+  }
+  .budget-bar-bg {
+    height: 8px;
+    background: var(--surface2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .budget-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--green), var(--yellow));
+    transition: width 0.5s ease;
+  }
+  .budget-bar-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+  }
+
+  /* Pending */
+  .pending-item {
+    padding: 0.65rem 0.8rem;
+    border-radius: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    margin-bottom: 0.5rem;
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+  .pending-name { font-weight: 600; margin-bottom: 0.2rem; }
+  .pending-note { color: var(--muted); font-size: 0.75rem; }
+  .pending-status { font-size: 0.72rem; margin-top: 0.3rem; }
+
+  /* Tab panels */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* Loading */
+  #loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div id="auth-screen">
+  <div class="auth-logo">🏠</div>
+  <div style="text-align:center;">
+    <div class="auth-title">Family Dashboard</div>
+    <div class="auth-sub" style="margin-top:0.3rem;">HanOS · Private</div>
+  </div>
+  <input class="auth-input" type="password" id="pwd-input" placeholder="password" autocomplete="off">
+  <button class="auth-btn" onclick="checkPassword()">Vào</button>
+  <div class="auth-error" id="auth-error">Sai password. Thử lại.</div>
+</div>
+
+<!-- LOADING -->
+<div id="loading" style="display:none;">Đang tải...</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+
+  <div class="header">
+    <div>
+      <div class="header-title">🏠 Family Dashboard</div>
+    </div>
+    <div class="header-meta" id="meta-info"></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('alerts')">🔔 Alerts</button>
+    <button class="tab" onclick="switchTab('childa')">👧 A</button>
+    <button class="tab" onclick="switchTab('childb')">👶 B</button>
+    <button class="tab" onclick="switchTab('nutrition')">🥗 Food</button>
+    <button class="tab" onclick="switchTab('finance')">💴 Budget</button>
+  </div>
+
+  <!-- ALERTS TAB -->
+  <div class="tab-panel active" id="tab-alerts">
+    <div class="section">
+      <div class="section-label">🔴 Cần làm ngay</div>
+      <div id="urgent-list"></div>
+    </div>
+    <div class="section">
+      <div class="section-label">🟡 Đang theo dõi</div>
+      <div id="monitor-list"></div>
+    </div>
+  </div>
+
+  <!-- CHILD A TAB -->
+  <div class="tab-panel" id="tab-childa">
+    <div class="section">
+      <div class="section-label">Chess</div>
+      <div class="stat-row" id="chess-stats"></div>
+      <div class="card" id="chess-detail"></div>
+    </div>
+    <div class="section">
+      <div class="section-label">Lịch tuần</div>
+      <div class="card" id="schedule-card"></div>
+    </div>
+    <div class="section">
+      <div class="section-label">Đọc sách</div>
+      <div id="reading-cards"></div>
+    </div>
+    <div class="section">
+      <div class="section-label">Toán</div>
+      <div class="card" id="math-card"></div>
+    </div>
+    <div class="section">
+      <div class="section-label">Sức khoẻ</div>
+      <div id="health-cards"></div>
+    </div>
+    <div class="section">
+      <div class="section-label">Alerts Child A</div>
+      <div id="childa-alerts"></div>
+    </div>
+  </div>
+
+  <!-- CHILD B TAB -->
+  <div class="tab-panel" id="tab-childb">
+    <div class="section">
+      <div class="section-label">Quan sát gần đây</div>
+      <div id="childb-obs"></div>
+    </div>
+    <div class="section">
+      <div class="section-label">Âm nhạc</div>
+      <div class="card" id="childb-music"></div>
+    </div>
+    <div class="section">
+      <div class="section-label">Approach</div>
+      <div class="card" id="childb-approach"></div>
+    </div>
+  </div>
+
+  <!-- NUTRITION TAB -->
+  <div class="tab-panel" id="tab-nutrition">
+    <div class="section">
+      <div class="section-label">Thực đơn tuần</div>
+      <div id="meal-plan"></div>
+    </div>
+    <div class="section">
+      <div class="section-label">Đi chợ</div>
+      <div class="card" id="shopping-list"></div>
+    </div>
+    <div class="section">
+      <div class="section-label">Nguyên tắc</div>
+      <div id="principles-list"></div>
+    </div>
+  </div>
+
+  <!-- FINANCE TAB -->
+  <div class="tab-panel" id="tab-finance">
+    <div class="section">
+      <div class="section-label">Budget ceiling</div>
+      <div class="card" id="budget-card"></div>
+    </div>
+    <div class="section">
+      <div class="section-label">Monthly estimate</div>
+      <div id="monthly-breakdown"></div>
+    </div>
+    <div class="section">
+      <div class="section-label">Finance alerts</div>
+      <div id="finance-alerts"></div>
+    </div>
+    <div class="section">
+      <div class="section-label" style="color:var(--red);">⚠️ Warning</div>
+      <div class="alert alert-red" id="finance-warning"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── PASSWORD ──────────────────────────────────────────────
+const PASSWORD = 'hanos2026';
+
+function checkPassword() {
+  const val = document.getElementById('pwd-input').value;
+  if (val === PASSWORD) {
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('loading').style.display = 'flex';
+    loadData();
+  } else {
+    document.getElementById('auth-error').style.display = 'block';
+    document.getElementById('pwd-input').value = '';
+    document.getElementById('pwd-input').focus();
+  }
+}
+
+document.getElementById('pwd-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') checkPassword();
+});
+
+// ── TABS ──────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ── DATA LOAD ─────────────────────────────────────────────
+async function loadData() {
+  try {
+    const res = await fetch('./data.json?v=' + Date.now());
+    const d = await res.json();
+    renderDashboard(d);
+  } catch(e) {
+    document.getElementById('loading').innerHTML =
+      '<div style="text-align:center;padding:2rem;color:var(--red);">⚠️ Không load được data.json<br><span style="font-size:0.75rem;color:var(--muted);margin-top:0.5rem;display:block;">Kiểm tra file data.json đã push lên chưa</span></div>';
+  }
+}
+
+// ── RENDER ────────────────────────────────────────────────
+function renderDashboard(d) {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+
+  // Meta
+  document.getElementById('meta-info').innerHTML =
+    `Tuần ${d.meta.week}<br>${d.meta.updated}`;
+
+  // ── ALERTS TAB ──
+  const urgent = document.getElementById('urgent-list');
+  d.pending_urgent.forEach(item => {
+    const cls = item.startsWith('🔴') ? 'alert-red' : 'alert-yellow';
+    urgent.innerHTML += `<div class="alert ${cls}">${item}</div>`;
+  });
+
+  const monitor = document.getElementById('monitor-list');
+  d.pending_monitor.forEach(item => {
+    monitor.innerHTML += `
+      <div class="pending-item">
+        <div class="pending-name">${item.name}</div>
+        <div class="pending-note">${item.note}</div>
+        <div class="pending-status">${item.status}</div>
+      </div>`;
+  });
+
+  // ── CHILD A TAB ──
+  const ca = d.child_a;
+
+  // Chess stats
+  document.getElementById('chess-stats').innerHTML = `
+    <div class="stat-box">
+      <div class="stat-num">★ ${ca.chess.stars}</div>
+      <div class="stat-label">ChessKid Stars</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">${ca.chess.puzzles}</div>
+      <div class="stat-label">Puzzles</div>
+    </div>`;
+
+  document.getElementById('chess-detail').innerHTML = `
+    <div class="card-row"><span class="card-key">Thói quen</span><span class="card-val">${ca.chess.habit}</span></div>
+    <div class="card-row"><span class="card-key">Kế hoạch</span><span class="card-val">${ca.chess.next}</span></div>`;
+
+  // Schedule
+  const sched = ca.sports_schedule;
+  const days = { mon:'T2', tue:'T3', wed:'T4', thu:'T5', fri:'T6', sat:'T7', sun:'CN' };
+  let schedHtml = '';
+  Object.keys(days).forEach(k => {
+    schedHtml += `<div class="schedule-row">
+      <span class="schedule-day">${days[k]}</span>
+      <span class="schedule-val">${sched[k]}</span>
+    </div>`;
+  });
+  document.getElementById('schedule-card').innerHTML = schedHtml;
+
+  // Reading
+  document.getElementById('reading-cards').innerHTML = `
+    <div class="card">
+      <div class="card-title">🇯🇵 Tiếng Nhật</div>
+      <div class="card-row"><span class="card-key">Đang đọc</span><span class="card-val">${ca.reading.japanese.current}</span></div>
+      <div class="card-row"><span class="card-key">Nguồn</span><span class="card-val">${ca.reading.japanese.source}</span></div>
+      <div class="card-row"><span class="card-key">Status</span><span class="card-val">${ca.reading.japanese.status}</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🇬🇧 Tiếng Anh</div>
+      <div class="card-row"><span class="card-key">Series</span><span class="card-val">${ca.reading.english.series}</span></div>
+      <div class="card-row"><span class="card-key">Level</span><span class="card-val">${ca.reading.english.level}</span></div>
+      <div class="card-row"><span class="card-key">Teacher</span><span class="card-val">${ca.reading.english.teacher}</span></div>
+      <div class="card-row"><span class="card-key">Tiếp theo</span><span class="card-val">${ca.reading.english.next}</span></div>
+    </div>`;
+
+  // Math
+  document.getElementById('math-card').innerHTML = `
+    <div class="card-row"><span class="card-key">Spine</span><span class="card-val">${ca.math.spine}</span></div>
+    <div class="card-row"><span class="card-key">Eikoh</span><span class="card-val">${ca.math.eikoh}</span></div>
+    <div class="card-row"><span class="card-key">Think!Think!</span><span class="card-val">${ca.math.think_think_may_result}</span></div>
+    <div class="card-row"><span class="card-key">1-on-1</span><span class="card-val">${ca.math.weekend_1on1}</span></div>
+    <div class="card-row"><span class="card-key">Target</span><span class="card-val">${ca.math.target}</span></div>`;
+
+  // Health
+  document.getElementById('health-cards').innerHTML = `
+    <div class="card">
+      <div class="card-title">😴 Ngủ</div>
+      <div class="card-row"><span class="card-key">Hiện tại</span><span class="card-val">${ca.sleep.current_avg_hours}h</span></div>
+      <div class="card-row"><span class="card-key">Target</span><span class="card-val">${ca.sleep.target_hours}h</span></div>
+      <div class="card-row"><span class="card-key">Status</span><span class="card-val">${ca.sleep.status}</span></div>
+      <div class="card-row"><span class="card-key">Plan</span><span class="card-val">${ca.sleep.strategy}</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title">👁️ Mắt</div>
+      <div class="card-row"><span class="card-key">Status</span><span class="card-val">${ca.vision.status}</span></div>
+      <div class="card-row"><span class="card-key">Action</span><span class="card-val">${ca.vision.action}</span></div>
+      <div class="card-row"><span class="card-key">Phòng khám</span><span class="card-val">${ca.vision.clinic}</span></div>
+    </div>`;
+
+  // Child A alerts
+  const caAlerts = document.getElementById('childa-alerts');
+  ca.alerts.forEach(a => {
+    const cls = a.startsWith('🔴') ? 'alert-red' : 'alert-yellow';
+    caAlerts.innerHTML += `<div class="alert ${cls}">${a}</div>`;
+  });
+
+  // ── CHILD B TAB ──
+  const cb = d.child_b;
+  const obs = document.getElementById('childb-obs');
+  cb.observations.forEach(o => {
+    obs.innerHTML += `<div class="alert alert-green">✦ ${o}</div>`;
+  });
+
+  document.getElementById('childb-music').innerHTML = `
+    <div class="card-row"><span class="card-key">Option</span><span class="card-val">${cb.music.option}</span></div>
+    <div class="card-row"><span class="card-key">Status</span><span class="card-val">${cb.music.status}</span></div>
+    <div class="card-row"><span class="card-key">Note</span><span class="card-val">${cb.music.note}</span></div>`;
+
+  document.getElementById('childb-approach').innerHTML =
+    `<div style="font-size:0.82rem;color:var(--muted);line-height:1.6;">${cb.approach}</div>`;
+
+  // ── NUTRITION TAB ──
+  const nut = d.nutrition;
+  const mp = document.getElementById('meal-plan');
+  nut.meal_plan.forEach(m => {
+    mp.innerHTML += `
+      <div class="meal-card">
+        <div class="meal-day">${m.day}</div>
+        <div class="meal-main">${m.main}</div>
+        <div style="font-size:0.75rem;color:var(--accent);margin:0.2rem 0;">${m.protein_source}</div>
+        <div class="meal-colors">${m.colors.join(' · ')}</div>
+      </div>`;
+  });
+
+  const sl = document.getElementById('shopping-list');
+  nut.shopping_list.forEach(item => {
+    sl.innerHTML += `<div class="shop-item">${item}</div>`;
+  });
+
+  const pl = document.getElementById('principles-list');
+  nut.principles.forEach(p => {
+    pl.innerHTML += `<div class="alert alert-green" style="margin-bottom:0.4rem;">✦ ${p}</div>`;
+  });
+
+  // ── FINANCE TAB ──
+  const fin = d.finance;
+  const monthly = fin.monthly_estimated_jpy;
+  const pct = Math.round((monthly.annual_estimate / fin.budget_ceiling_jpy) * 100);
+
+  document.getElementById('budget-card').innerHTML = `
+    <div class="card-row">
+      <span class="card-key">Ceiling</span>
+      <span class="card-val" style="color:var(--yellow);font-weight:700;">${(fin.budget_ceiling_jpy/10000).toFixed(0)}万円/năm</span>
+    </div>
+    <div class="card-row"><span class="card-key">Estimate hiện tại</span><span class="card-val">${(monthly.annual_estimate/10000).toFixed(0)}万円/năm</span></div>
+    <div class="budget-bar-wrap">
+      <div class="budget-bar-bg">
+        <div class="budget-bar-fill" style="width:${pct}%"></div>
+      </div>
+      <div class="budget-bar-labels"><span>0</span><span>${pct}% used</span><span>110万</span></div>
+    </div>`;
+
+  const mb = document.getElementById('monthly-breakdown');
+  const items = [
+    ['Eikoh Juku', monthly.eikoh_juku],
+    ['Philippines Teacher', monthly.philippines_teacher],
+    ['Think!Think! Premium', monthly.think_think_premium],
+    ['Allowance Child A', monthly.allowance_child_a],
+    ['Sports (estimate)', monthly.sports_estimate],
+  ];
+  let breakHtml = '<div class="card">';
+  items.forEach(([k, v]) => {
+    if (v) breakHtml += `<div class="card-row"><span class="card-key">${k}</span><span class="card-val">${v.toLocaleString()}円</span></div>`;
+  });
+  breakHtml += `<div class="card-row" style="border-top:1px solid var(--border);margin-top:0.4rem;padding-top:0.4rem;">
+    <span class="card-key" style="font-weight:700;">Total/tháng</span>
+    <span class="card-val" style="color:var(--yellow);font-weight:700;">${monthly.total_with_sports_estimate.toLocaleString()}円</span>
+  </div></div>`;
+  mb.innerHTML = breakHtml;
+
+  const fa = document.getElementById('finance-alerts');
+  fin.alerts.forEach(a => {
+    const cls = a.startsWith('🔴') ? 'alert-red' : 'alert-yellow';
+    fa.innerHTML += `<div class="alert ${cls}">${a}</div>`;
+  });
+
+  document.getElementById('finance-warning').textContent = fin.warning;
+}
+</script>
+</body>
+</html>

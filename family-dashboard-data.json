@@ -1,0 +1,235 @@
+{
+  "meta": {
+    "week": "2026-W25",
+    "updated": "2026-06-15",
+    "updated_by": "Claude (HanOS skill: update-dashboard)",
+    "version": "1.0.0"
+  },
+
+  "child_a": {
+    "name": "Child A",
+    "age": 7,
+    "grade": "Grade 2",
+
+    "sleep": {
+      "target_hours": 9.5,
+      "current_avg_hours": 8.5,
+      "bedtime_target": "21:00",
+      "wake_target": "06:30",
+      "status": "⚠️ Thiếu ~1h — growth hormone ảnh hưởng",
+      "strategy": "Lùi routine tối 15ph/tuần. Screen cutoff 20h. Đọc sách thay tablet."
+    },
+
+    "vision": {
+      "status": "⚠️ Chưa khám — nghi ngờ cận thị tiến triển",
+      "action": "Đặt lịch 氏川眼科 tháng 6",
+      "clinic": "氏川眼科医院 (gần ga Machida)",
+      "notes": "Sau khám: ghi số cận + trục nhãn cầu. Xem xét リジュセアミニ (Atropine 0.01%).",
+      "ortho_k": "Research sau khi có số cận confirmed"
+    },
+
+    "chess": {
+      "platform": "ChessKid",
+      "stars": 2628,
+      "puzzles": 1406,
+      "habit": "Tự ngồi 30–40p/ngày không cần nhắc",
+      "next": "Enroll CLB sau khi bóng đá kết thúc (từ 08/2026)"
+    },
+
+    "sports_schedule": {
+      "mon": "Cầu lông với mẹ (30–45p tại nhà)",
+      "tue": "Eikoh Juku",
+      "wed": "Bơi",
+      "thu": "—",
+      "fri": "Cầu lông với mẹ (30–45p tại nhà)",
+      "sat": "Bóng đá",
+      "sun": "—"
+    },
+
+    "reading": {
+      "japanese": {
+        "source": "Thư viện (mượn — không mua)",
+        "current": "あまんきみこ series vol 1–4",
+        "status": "Vol 5 defer",
+        "philosophy": "Slow reading — 奇跡のドリル backbone"
+      },
+      "english": {
+        "series": "Dragon Masters (read-aloud) + Wimpy Kid (journal)",
+        "level": "Little Fox Level 3 (near complete)",
+        "teacher": "Philippines Teacher — ~30 buổi còn lại, kết thúc ~07/2026",
+        "next": "Cân nhắc Pika robot vs 1 buổi/tuần sau 07/2026"
+      }
+    },
+
+    "math": {
+      "spine": "算数ラボ (SansuLab)",
+      "eikoh": "Thứ 3/tuần — 発展問題 Block 1",
+      "think_think_may_result": "631 điểm — Brilliant!!!",
+      "weekend_1on1": "1h cuối tuần với mẹ",
+      "target": "算数オリンピック Grade 4 (July 2028)"
+    },
+
+    "alerts": [
+      "🔴 Chưa đặt lịch khám mắt 氏川眼科 (target tháng 6)",
+      "🟡 Giấc ngủ thiếu ~1h — cần adjust routine tối",
+      "🟡 Encouragement notebook — in chưa? Value list review với bố",
+      "🟡 Chốt Pika robot vs Philippines teacher sau 07/2026"
+    ]
+  },
+
+  "child_b": {
+    "name": "Child B",
+    "age_note": "~2 tuổi",
+    "setting": "Nhà trẻ — môi trường tiếng Nhật",
+
+    "observations": [
+      "Bilingual Việt–Nhật đang hoạt động tốt",
+      "Phonetic absorption nhanh — lặp lại từ lạ ngay sau khi nghe",
+      "Cảm âm và rhythm tốt — vượt mức thích nhạc bình thường",
+      "Tốc độ phát triển ngôn ngữ vượt tuổi"
+    ],
+
+    "music": {
+      "option": "Kawai Music School (河合楽器)",
+      "status": "⏳ Đang research — chưa chốt",
+      "note": "Nếu chốt: review lại allocation trong ceiling 110万/năm"
+    },
+
+    "approach": "Quan sát thiên hướng, không định hướng. Não giai đoạn absorptive."
+  },
+
+  "nutrition": {
+    "philosophy": "Protein-First Whole Food. ≥3 màu tự nhiên/bữa. Track ảnh bữa tối.",
+
+    "targets": {
+      "han_protein_day": "74g (~25g/bữa chính)",
+      "child_a_protein_day": "32g (~11g/bữa chính)",
+      "child_b_protein_day": "14g (~5g/bữa chính)"
+    },
+
+    "meal_plan": [
+      {
+        "day": "Thứ 2",
+        "main": "Cá thu kho + cơm + miso soup komatsuna",
+        "protein_source": "Cá thu 100g (Han) / 60g (A)",
+        "colors": ["Nâu (cá)", "Xanh đậm (komatsuna)", "Trắng (đậu phụ)"]
+      },
+      {
+        "day": "Thứ 3",
+        "main": "Trứng cuộn + natto + salad cà chua",
+        "protein_source": "2 trứng (Han) + 1 gói natto",
+        "colors": ["Vàng (trứng)", "Đỏ (cà chua)", "Tím/Nâu (natto)"]
+      },
+      {
+        "day": "Thứ 4",
+        "main": "Đậu phụ sốt gừng + edamame + cơm",
+        "protein_source": "Đậu phụ momen ½ bìa + edamame 50g",
+        "colors": ["Trắng (đậu phụ)", "Xanh lá (edamame)", "Cam (cà rốt)"]
+      },
+      {
+        "day": "Thứ 5",
+        "main": "Cá hồi áp chảo + broccoli + miso soup",
+        "protein_source": "Cá hồi 100g (Han) / 60g (A)",
+        "colors": ["Cam (cá hồi)", "Xanh (broccoli)", "Đỏ (ớt chuông)"]
+      },
+      {
+        "day": "Thứ 6",
+        "main": "Súp gà + rau củ + đậu phụ",
+        "protein_source": "Gà + đậu phụ mix",
+        "colors": ["Trắng (gà)", "Cam/Vàng (bí ngô)", "Xanh đậm (cải bó xôi)"]
+      }
+    ],
+
+    "shopping_list": [
+      "Trứng M — 14–16 quả",
+      "Đậu phụ momen 300g — 3 bìa",
+      "Cá hồi hoặc cá thu — 400–500g",
+      "Natto 47g — 5–6 gói",
+      "Edamame (bóc vỏ) — 200g",
+      "Sữa tươi — 5–7 hộp 200ml",
+      "Komatsuna hoặc cải bó xôi — 1 bó",
+      "Cà chua — 500g",
+      "Broccoli — 1 cây",
+      "Cà rốt — 3–4 củ",
+      "Nấm shiitake/shimeji — 1 gói"
+    ],
+
+    "principles": [
+      "Protein trước — ăn protein trước cơm",
+      "3 màu tự nhiên/bữa tối (không tính trắng)",
+      "Omega-3 qua cá 3x/tuần hoặc flaxseed oil",
+      "Polyphenol: Meiji 72% cacao",
+      "Supplement Han: Calcium hydroxyapatite + Magnesium glycinate + D3+K2",
+      "Track: chụp ảnh bữa tối mỗi ngày → review cuối tuần"
+    ]
+  },
+
+  "finance": {
+    "period": "2026",
+    "budget_ceiling_jpy": 1100000,
+    "ceiling_label": "110万円/năm — hard ceiling cho cả 2 bé",
+
+    "monthly_estimated_jpy": {
+      "eikoh_juku": 37500,
+      "philippines_teacher": 6000,
+      "think_think_premium": 980,
+      "allowance_child_a": 600,
+      "subtotal_confirmed": 45080,
+      "sports_estimate": 20000,
+      "total_with_sports_estimate": 65000,
+      "annual_estimate": 780000
+    },
+
+    "budget_breakdown": {
+      "eikoh": "~45% (~40–50万/năm)",
+      "sports_activities": "~25% (~20–30万/năm)",
+      "english_tech": "~8% (~5–10万/năm)",
+      "child_b": "~22% (~20–30万/năm)"
+    },
+
+    "spent_ytd_note": "Chưa có actual tracking — cần log monthly receipt",
+
+    "alerts": [
+      "🔴 Bơi lội + bóng đá — active nhưng chưa có cost data",
+      "🟡 Kawai Music (Child B) nếu chốt → review toàn bộ allocation",
+      "🟡 Philippines Teacher kết thúc ~07/2026 — quyết định tiếp theo chưa chốt",
+      "🟡 Ortho-K + リジュセアミニ cost — pending khám 氏川眼科"
+    ],
+
+    "warning": "Budget ước tính ~102万 — rất sát ceiling 110万. Mọi item mới = trade-off."
+  },
+
+  "pending_urgent": [
+    "🔴 Đặt lịch khám mắt 氏川眼科 tháng 6",
+    "🔴 Log chi phí bơi lội + bóng đá vào vault",
+    "🔴 Quyết định sau Philippines Teacher 07/2026 (Pika robot?)"
+  ],
+
+  "pending_monitor": [
+    {
+      "name": "Kawai Music — Child B",
+      "note": "Research giá trước khi chốt. Nếu chốt → review lại toàn bộ 110万 allocation.",
+      "status": "⏳ Đang research"
+    },
+    {
+      "name": "Chess CLB từ 08/2026",
+      "note": "ChessKid Stars 2628 / Puzzles 1406. Sau bóng đá → enroll CLB hoặc Shogi JSA ¥6,600/tháng.",
+      "status": "⏳ Planned"
+    },
+    {
+      "name": "Think!Think! Premium upgrade",
+      "note": "Tháng 5: 631 điểm — Brilliant!!!. Nếu bé tự quay lại → upgrade 980円/tháng.",
+      "status": "🟡 Chờ tín hiệu từ bé"
+    },
+    {
+      "name": "Encouragement Notebook",
+      "note": "A5, 3 tầng sticker system. Value list cần review với bố.",
+      "status": "🟡 Chưa in"
+    },
+    {
+      "name": "Giấc ngủ Child A",
+      "note": "Target 9.5h. Hiện ~8–8.5h. Lùi routine 15ph/tuần. Screen cutoff 20h.",
+      "status": "🟡 Đang adjust"
+    }
+  ]
+}
